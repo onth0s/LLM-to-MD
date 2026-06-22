@@ -11,13 +11,6 @@ from rich_argparse import RichHelpFormatter
 from .message import Message
 from .parsers import get_parser
 
-if sys.platform == "win32":
-    os.system("")
-
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-
-console = Console()
-
 
 def render(messages: list[Message]) -> str:
     lines = ["# Conversation\n", "\n---\n"]
@@ -32,7 +25,7 @@ def _default_output_path(provider: str, cwd: Path | None = None) -> Path:
     return base / f"{provider}-conversation.md"
 
 
-def _read_input_html(input_path: Path | None) -> str:
+def _read_input_html(input_path: Path | None, console: Console) -> str:
     if input_path is not None:
         if not input_path.exists():
             console.print(f"[red]Error:[/] input file not found: {input_path}")
@@ -59,18 +52,18 @@ def _read_input_html(input_path: Path | None) -> str:
     return html
 
 
-def _confirm_overwrite(path: Path, prompt_fn=input, console=None) -> bool:
+def _confirm_overwrite(path: Path, prompt_fn=input, console: Console = None) -> bool:
     if console is None:
         console = Console()
     answer = prompt_fn(f"'{path}' already exists. Overwrite? [y/N]: ").strip().lower()
     return answer in ("y", "yes")
 
 
-def run(args, prompt_fn=input, console=None):
+def run(args, prompt_fn=input, console: Console = None):
     if console is None:
         console = Console()
 
-    html = _read_input_html(args.input)
+    html = _read_input_html(args.input, console)
 
     try:
         provider = get_parser(args.provider)
@@ -125,11 +118,19 @@ def _build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv=None, prompt_fn=input, console=None):
+def main(argv=None, prompt_fn=input, console: Console = None):
+    if console is None:
+        console = Console()
+
     parser = _build_parser()
     args = parser.parse_args(argv)
     run(args, prompt_fn=prompt_fn, console=console)
 
 
 if __name__ == "__main__":
+    if sys.platform == "win32":
+        os.system("")
+
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+
     main()
