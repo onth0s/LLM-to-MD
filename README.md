@@ -12,7 +12,7 @@ llmd examples/grok/grok-conversation.html --provider grok
 |-------------|-------------|
 | Grok        | Done         |
 | Gemini      | Done         |
-| ChatGPT     | Coming soon  |
+| ChatGPT     | Done         |
 | Claude      | Coming soon  |
 | DeepSeek    | Coming soon  |
 | NotebookLM  | Coming soon  |
