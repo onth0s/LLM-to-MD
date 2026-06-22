@@ -3,7 +3,7 @@
 Convert HTML exports from major LLM chatbots into clean, readable markdown.
 
 ```
-llmd examples/grok/grok-conversation.html --provider grok -o output.md
+llmd examples/grok/grok-conversation.html --provider grok
 ```
 
 ## Supported providers
@@ -23,10 +23,25 @@ llmd examples/grok/grok-conversation.html --provider grok -o output.md
 pip install -e .
 ```
 
-## Usage
+## Default behavior
 
-```bash
-llmd input.html --provider <provider> [-o output.md]
+```
+llmd <HTML input, if not provided, fall back to capturing the clipboard> -p [PROVIDER] -o <[PROVIDER]-conversation.md>, optional, defaults to cwd
 ```
 
-If `--output` is omitted, output is written to stdout.
+- `input` is optional. When omitted, `llmd` reads the system clipboard via `pyperclip`.
+- `-p/--provider` is required for now.
+- `-o/--output` is optional. When omitted, `llmd` writes `<provider>-conversation.md` in the current working directory.
+- If the destination file already exists, `llmd` prompts before overwriting.
+
+### Examples
+
+```bash
+llmd grok-export.html -p grok                 # writes ./grok-conversation.md
+llmd -p grok                                  # reads clipboard, writes ./grok-conversation.md
+llmd gemini-export.html -p gemini -o notes.md # writes ./notes.md (overrides default name)
+```
+
+## Coming soon
+
+- Automatic provider detection from HTML — for now `-p` must be supplied explicitly.

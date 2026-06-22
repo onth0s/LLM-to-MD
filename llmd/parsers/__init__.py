@@ -14,6 +14,7 @@ _PARSERS = {
     "notebooklm": NotebookLMParser,
 }
 
+
 def get_parser(name: str):
     cls = _PARSERS.get(name)
     if cls is None:

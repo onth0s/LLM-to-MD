@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "llmd"
@@ -9,6 +9,9 @@ description = "Convert LLM chat exports to clean markdown"
 requires-python = ">=3.10"
 dependencies = [
     "beautifulsoup4>=4.12",
+    "pyperclip>=1.8",
+    "rich>=13",
+    "rich-argparse>=1.6",
 ]
 
 [project.scripts]
@@ -16,3 +19,20 @@ llmd = "llmd.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["llmd*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+    "E501",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

@@ -5,5 +5,4 @@ from .message import Message
 
 class BaseParser(ABC):
     @abstractmethod
-    def parse(self, html: str) -> list[Message]:
-        ...
+    def parse(self, html: str) -> list[Message]: ...
