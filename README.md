@@ -11,8 +11,8 @@ llmd examples/grok/grok-conversation.html --provider grok -o output.md
 | Provider     | Status       |
 |-------------|-------------|
 | Grok        | Done         |
+| Gemini      | Done         |
 | ChatGPT     | Coming soon  |
-| Gemini      | Coming soon  |
 | Claude      | Coming soon  |
 | DeepSeek    | Coming soon  |
 | NotebookLM  | Coming soon  |

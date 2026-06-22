@@ -7,6 +7,18 @@ def post_process(text: str) -> str:
     t = re.sub(r'^\*\*Thought for \d+s\*\*\s*\n*', '', t, flags=re.MULTILINE)
     t = re.sub(r'^Thought for \d+s\s*\n*', '', t, flags=re.MULTILINE)
 
+    t = re.sub(r'\n{4,}', '\n\n\n', t)
+    t = re.sub(r'[ \t]+\n', '\n', t)
+    t = re.sub(r'\n[ \t]+', '\n', t)
+    t = re.sub(r' +', ' ', t)
+    t = t.strip()
+
+    return t
+
+
+def grok_post_process(text: str) -> str:
+    t = post_process(text)
+
     t = re.sub(r'  +', ' ', t)
 
     t = re.sub(r'(?<=\w)\*\*', ' **', t)
@@ -29,9 +41,6 @@ def post_process(text: str) -> str:
     t = re.sub(r'\bGrok\b', 'User-Agent', t)
     t = re.sub(r'(?<![a-zA-Z])grok(?![a-zA-Z])', 'user-agent', t)
 
-    t = re.sub(r'\n{4,}', '\n\n\n', t)
-    t = re.sub(r'[ \t]+\n', '\n', t)
-    t = re.sub(r'\n[ \t]+', '\n', t)
     t = re.sub(r' +', ' ', t)
     t = t.strip()
 
