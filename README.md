@@ -31,7 +31,7 @@ llmd <HTML input, if not provided, fall back to capturing the clipboard> -p [PRO
 
 - `input` is optional. When omitted, `llmd` reads the system clipboard via `pyperclip`.
 - `-p/--provider` is required for now.
-- `-o/--output` is optional. When omitted, `llmd` writes `<provider>-conversation.md` in the current working directory.
+- `-o/--output` is optional. When omitted, `llmd` writes `<provider>-conversation.md` in the current working directory. When given, a missing `.md` extension is appended automatically.
 - If the destination file already exists, `llmd` prompts before overwriting.
 
 ### Examples

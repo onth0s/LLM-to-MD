@@ -47,6 +47,45 @@ def test_run_honors_explicit_output(tmp_path, monkeypatch, grok_html):
     assert not (tmp_path / "grok-conversation.md").exists()
 
 
+def test_run_adds_md_extension_to_explicit_output(tmp_path, monkeypatch, grok_html):
+    monkeypatch.chdir(tmp_path)
+    target = tmp_path / "custom"
+
+    args = SimpleNamespace(input=None, provider="grok", output=target)
+    monkeypatch.setattr(pyperclip, "paste", lambda: grok_html)
+
+    cli.run(args)
+
+    assert (tmp_path / "custom.md").exists()
+    assert not target.exists()
+
+
+def test_run_does_not_duplicate_md_extension(tmp_path, monkeypatch, grok_html):
+    monkeypatch.chdir(tmp_path)
+    target = tmp_path / "custom.md"
+
+    args = SimpleNamespace(input=None, provider="grok", output=target)
+    monkeypatch.setattr(pyperclip, "paste", lambda: grok_html)
+
+    cli.run(args)
+
+    assert target.exists()
+    assert not (tmp_path / "custom.md.md").exists()
+
+
+def test_run_handles_uppercase_md_extension(tmp_path, monkeypatch, grok_html):
+    monkeypatch.chdir(tmp_path)
+    target = tmp_path / "custom.MD"
+
+    args = SimpleNamespace(input=None, provider="grok", output=target)
+    monkeypatch.setattr(pyperclip, "paste", lambda: grok_html)
+
+    cli.run(args)
+
+    assert target.exists()
+    assert not (tmp_path / "custom.MD.md").exists()
+
+
 def test_run_reads_from_input_file(tmp_path, monkeypatch, grok_html):
     monkeypatch.chdir(tmp_path)
     src = tmp_path / "in.html"

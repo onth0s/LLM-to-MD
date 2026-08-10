@@ -25,6 +25,10 @@ def _default_output_path(provider: str, cwd: Path | None = None) -> Path:
     return base / f"{provider}-conversation.md"
 
 
+def _ensure_md_suffix(path: Path) -> Path:
+    return path if path.suffix.lower() == ".md" else Path(str(path) + ".md")
+
+
 def _read_input_html(input_path: Path | None, console: Console) -> str:
     if input_path is not None:
         if not input_path.exists():
@@ -75,6 +79,7 @@ def run(args, prompt_fn=input, console: Console = None):
     output_text = render(messages)
 
     output_path = args.output if args.output is not None else _default_output_path(args.provider)
+    output_path = _ensure_md_suffix(output_path)
 
     if output_path.exists():
         if not _confirm_overwrite(output_path, prompt_fn=prompt_fn, console=console):
@@ -113,7 +118,7 @@ def _build_parser() -> argparse.ArgumentParser:
         "-o",
         type=Path,
         default=None,
-        help="Output markdown file (default: <provider>-conversation.md in the current directory)",
+        help="Output markdown file; .md is appended if missing (default: <provider>-conversation.md in the current directory)",
     )
     return parser
 
